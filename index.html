@@ -3,541 +3,633 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eğitim İhtiyaç Analizi Formu</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Eğitim İhtiyaç Analizi Formu | UKXperience</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #1a1a2e;
-    --cream: #f9f6f0;
-    --accent: #c0392b;
-    --accent2: #2e6da4;
-    --border: #d4c9b8;
-    --muted: #7a7060;
-    --success: #27ae60;
-    --card: #ffffff;
-    --shadow: 0 2px 16px rgba(26,26,46,0.08);
+    --black: #000000;
+    --white: #ffffff;
+    --gray-100: #f5f5f5;
+    --gray-200: #e8e8e8;
+    --gray-400: #999999;
+    --gray-600: #555555;
+    --shadow: 0 1px 4px rgba(0,0,0,0.10);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    background: var(--gray-100);
+    color: var(--black);
     min-height: 100vh;
-    padding: 0 0 60px;
+    padding-bottom: 60px;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 40px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-logo img { height: 44px; }
+  .lang-switch {
+    display: flex; gap: 4px;
+  }
+  .lang-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 6px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1.5px solid var(--black);
+    background: transparent;
+    color: var(--black);
+    transition: all 0.15s;
+  }
+  .lang-btn.active, .lang-btn:hover {
+    background: var(--black);
+    color: var(--white);
   }
 
   /* HEADER */
   .header {
-    background: var(--ink);
-    color: white;
-    padding: 48px 40px 40px;
+    background: var(--black);
+    color: var(--white);
+    padding: 52px 40px 44px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent, transparent 20px,
-      rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px
-    );
   }
   .header-badge {
     display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--accent);
-    border: 1px solid var(--accent);
-    padding: 4px 14px;
-    border-radius: 2px;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 4px 16px;
     margin-bottom: 20px;
-    position: relative;
   }
   .header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(28px, 5vw, 46px);
-    font-weight: 400;
+    font-size: clamp(26px, 4vw, 42px);
+    font-weight: 300;
+    letter-spacing: -0.5px;
     line-height: 1.15;
-    position: relative;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
+  .header h1 strong { font-weight: 700; }
   .header p {
-    font-size: 15px;
-    color: rgba(255,255,255,0.55);
-    position: relative;
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
     font-weight: 300;
   }
 
   /* PROGRESS */
   .progress-wrap {
-    background: var(--ink);
-    padding: 0 40px 28px;
-    display: flex;
-    justify-content: center;
+    background: var(--black);
+    padding: 0 40px 24px;
+    display: flex; justify-content: center;
   }
+  .progress-inner { width: 100%; max-width: 720px; }
   .progress-bar-outer {
-    width: 100%; max-width: 720px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 3px;
-    height: 4px;
+    background: rgba(255,255,255,0.15);
+    height: 2px; border-radius: 1px;
   }
-  .progress-bar-inner {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 3px;
-    width: 0%;
+  .progress-bar-fill {
+    height: 100%; background: var(--white);
+    border-radius: 1px; width: 0%;
     transition: width 0.4s ease;
   }
   .progress-label {
-    text-align: center;
-    color: rgba(255,255,255,0.45);
-    font-size: 12px;
-    margin-top: 8px;
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    margin-top: 8px; text-align: right;
+    letter-spacing: 0.5px;
   }
 
-  /* FORM CONTAINER */
+  /* CONTAINER */
   .container {
     max-width: 760px;
-    margin: 40px auto 0;
+    margin: 36px auto 0;
     padding: 0 24px;
   }
 
   /* SECTION */
   .section {
-    background: var(--card);
-    border-radius: 6px;
-    box-shadow: var(--shadow);
-    margin-bottom: 20px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 4px;
+    margin-bottom: 16px;
     overflow: hidden;
-    border-left: 3px solid transparent;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   .section:focus-within {
-    border-left-color: var(--accent2);
-    box-shadow: 0 4px 24px rgba(26,26,46,0.13);
+    border-color: var(--black);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   }
   .section-header {
     display: flex;
     align-items: flex-start;
     gap: 16px;
-    padding: 24px 28px 0;
+    padding: 22px 24px 0;
   }
   .section-num {
-    width: 28px; height: 28px;
-    min-width: 28px;
-    background: var(--ink);
-    color: white;
-    font-size: 12px;
-    font-weight: 600;
+    width: 26px; height: 26px; min-width: 26px;
+    background: var(--black);
+    color: var(--white);
+    font-size: 11px; font-weight: 700;
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    margin-top: 2px;
+    margin-top: 1px;
   }
-  .section-required .section-num { background: var(--accent); }
   .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 17px;
-    font-weight: 400;
-    color: var(--ink);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--black);
     line-height: 1.4;
   }
-  .required-star { color: var(--accent); margin-left: 4px; }
-  .section-body { padding: 16px 28px 24px 72px; }
+  .required-star { color: var(--black); margin-left: 3px; }
+  .section-body { padding: 14px 24px 22px 66px; }
 
   /* INPUTS */
   input[type="text"],
   input[type="number"],
-  textarea,
-  select {
+  textarea {
     width: 100%;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
-    color: var(--ink);
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 10px 14px;
+    color: var(--black);
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-radius: 3px;
+    padding: 10px 12px;
     outline: none;
     transition: border-color 0.2s, background 0.2s;
     resize: vertical;
   }
-  input:focus, textarea:focus, select:focus {
-    border-color: var(--accent2);
-    background: white;
+  input:focus, textarea:focus {
+    border-color: var(--black);
+    background: var(--white);
   }
-  textarea { min-height: 90px; }
+  textarea { min-height: 80px; }
 
-  /* CHECKBOX GRID */
-  .checkbox-grid {
+  /* CIRCLE OPTION ITEMS — all same, circle shape */
+  .options-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 4px;
+    margin-top: 6px;
   }
-  .check-item {
+  .opt-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 14px;
+    gap: 10px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 100px;
+    padding: 8px 18px 8px 12px;
     cursor: pointer;
     transition: all 0.15s;
-    font-size: 13.5px;
+    font-size: 13px;
+    font-weight: 400;
     user-select: none;
+    color: var(--gray-600);
   }
-  .check-item:hover { border-color: var(--accent2); background: #eef4fb; }
-  .check-item input[type="checkbox"],
-  .check-item input[type="radio"] {
-    width: auto; margin: 0;
-    accent-color: var(--accent);
+  .opt-item:hover {
+    border-color: var(--black);
+    color: var(--black);
   }
-  .check-item.selected {
-    background: #eef4fb;
-    border-color: var(--accent2);
-    color: var(--accent2);
+  .opt-item.selected {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
     font-weight: 500;
   }
-
-  /* RADIO BUTTONS */
-  .radio-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
-
-  /* RANGE SLIDERS */
-  .range-wrap { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 4px; }
-  .range-item { flex: 1; min-width: 160px; }
-  .range-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-  .range-value { font-size: 22px; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
-  input[type="range"] {
-    width: 100%; accent-color: var(--accent);
-    height: 4px; background: var(--border);
-    border: none; padding: 0; border-radius: 2px;
+  /* Hide native checkbox/radio, show custom circle */
+  .opt-item input[type="checkbox"],
+  .opt-item input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px; height: 16px; min-width: 16px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
   }
-  .range-sum { font-size: 12px; color: var(--muted); margin-top: 12px; }
-  .range-sum.error { color: var(--accent); font-weight: 500; }
+  .opt-item input[type="checkbox"]:checked,
+  .opt-item input[type="radio"]:checked {
+    background: var(--white);
+    border-color: var(--white);
+  }
+  .opt-item input[type="checkbox"]:checked::after,
+  .opt-item input[type="radio"]:checked::after {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--black);
+    position: absolute;
+  }
 
-  /* NUMBER INPUTS */
-  .number-input-wrap { position: relative; max-width: 180px; }
-  .number-input-wrap input[type="number"] { padding-right: 14px; }
+  /* RANGE */
+  .range-wrap { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 6px; }
+  .range-item { flex: 1; min-width: 160px; }
+  .range-label { font-size: 12px; color: var(--gray-400); margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .range-value { font-size: 28px; font-weight: 700; color: var(--black); margin-bottom: 8px; }
+  input[type="range"] {
+    width: 100%; accent-color: var(--black);
+    height: 2px; background: var(--gray-200);
+    border: none; padding: 0; border-radius: 1px;
+    cursor: pointer;
+  }
+  .range-sum { font-size: 11px; color: var(--gray-400); margin-top: 10px; }
+
+  /* NUMBER */
+  .number-wrap { max-width: 160px; }
 
   /* HINT */
-  .hint { font-size: 12px; color: var(--muted); margin-top: 6px; font-style: italic; }
-
-  /* DIVIDER */
-  .divider {
-    height: 1px; background: var(--border); margin: 12px 0;
-  }
+  .hint { font-size: 11px; color: var(--gray-400); margin-top: 6px; }
 
   /* SUBMIT */
-  .submit-wrap { text-align: center; margin-top: 36px; }
+  .submit-wrap { text-align: center; margin-top: 32px; }
   .submit-btn {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 1px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    background: var(--ink);
-    color: white;
+    background: var(--black);
+    color: var(--white);
     border: none;
-    padding: 16px 52px;
-    border-radius: 4px;
+    padding: 16px 56px;
+    border-radius: 2px;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
+    transition: opacity 0.2s;
   }
-  .submit-btn:hover { background: var(--accent); transform: translateY(-1px); }
-  .submit-btn:disabled { background: var(--muted); cursor: not-allowed; transform: none; }
+  .submit-btn:hover { opacity: 0.8; }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
   /* TOAST */
   .toast {
-    position: fixed; bottom: 32px; right: 32px;
-    background: var(--success);
-    color: white;
-    padding: 14px 28px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s;
-    z-index: 999;
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--black);
+    color: var(--white);
+    padding: 14px 24px;
+    border-radius: 3px;
+    font-size: 13px; font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    opacity: 0; transform: translateY(12px);
+    transition: all 0.3s; z-index: 999;
     pointer-events: none;
   }
   .toast.show { opacity: 1; transform: translateY(0); }
-  .toast.error-toast { background: var(--accent); }
+  .toast.error { background: #333; border-left: 3px solid #ff4444; }
 
-  /* SUPABASE CONFIG BANNER */
-  .config-banner {
-    background: #fff8e1;
-    border: 1px solid #ffe082;
-    border-radius: 6px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    color: #795548;
-  }
-  .config-banner strong { color: #e65100; }
-  .config-banner code {
-    background: #fff3e0;
-    padding: 1px 6px;
-    border-radius: 3px;
-    font-family: monospace;
-    font-size: 12px;
-  }
+  /* VALIDATION ERROR */
+  .field-error { font-size: 11px; color: #cc0000; margin-top: 5px; display: none; }
+  .field-error.show { display: block; }
+  .section.has-error { border-color: #cc0000; }
 
   @media (max-width: 600px) {
-    .section-body { padding-left: 28px; }
-    .header { padding: 36px 20px 28px; }
+    .section-body { padding-left: 24px; }
+    .topbar { padding: 12px 20px; }
+    .header { padding: 36px 20px 32px; }
   }
 </style>
 </head>
 <body>
 
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <img src="data:image/jpeg;base64,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" alt="UKXperience">
+  </div>
+  <div class="lang-switch">
+    <button class="lang-btn active" onclick="setLang('tr')" id="btn-tr">TR</button>
+    <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
+</div>
+
 <!-- HEADER -->
 <div class="header">
-  <div class="header-badge">Eğitim Talep Sistemi</div>
-  <h1>Eğitim İhtiyaç<br>Analizi Formu</h1>
-  <p>Lütfen tüm alanları eksiksiz doldurunuz.</p>
+  <div class="header-badge" data-tr="Eğitim Talep Sistemi" data-en="Training Request System">Eğitim Talep Sistemi</div>
+  <h1><strong data-tr="Eğitim İhtiyaç" data-en="Training Needs">Eğitim İhtiyaç</strong><br><span data-tr="Analizi Formu" data-en="Analysis Form">Analizi Formu</span></h1>
+  <p data-tr="Lütfen tüm alanları eksiksiz doldurunuz." data-en="Please fill in all fields completely.">Lütfen tüm alanları eksiksiz doldurunuz.</p>
 </div>
 
 <!-- PROGRESS -->
 <div class="progress-wrap">
-  <div style="width:100%;max-width:720px;">
+  <div class="progress-inner">
     <div class="progress-bar-outer">
-      <div class="progress-bar-inner" id="progressBar"></div>
+      <div class="progress-bar-fill" id="progressBar"></div>
     </div>
-    <div class="progress-label" id="progressLabel">Form tamamlanma durumu: %0</div>
+    <div class="progress-label" id="progressLabel">0%</div>
   </div>
 </div>
 
-<!-- MAIN FORM -->
+<!-- FORM -->
 <div class="container">
+<form id="egitimForm">
 
-  <!-- CONFIG BANNER -->
-  <div class="config-banner" id="configBanner">
-    ⚙️ <strong>Kurulum:</strong> Formu çalıştırmadan önce aşağıdaki kodda
-    <code>SUPABASE_URL</code> ve <code>SUPABASE_ANON_KEY</code> değerlerini
-    kendi Supabase projenizden değiştirin. Tablo SQL'i de sayfanın altındadır.
+  <!-- 1 -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title" data-tr="Eğitim neden gerekli? Temel amaç nedir? <span class='required-star'>*</span>" data-en="Why is training needed? What is the main purpose? <span class='required-star'>*</span>">Eğitim neden gerekli? Temel amaç nedir? <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Performans artışı sağlamak"><span data-tr="Performans artışı" data-en="Performance improvement">Performans artışı</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Yönetici gelişimi"><span data-tr="Yönetici gelişimi" data-en="Manager development">Yönetici gelişimi</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Yeni başlayanların adaptasyonu"><span data-tr="Yeni başlayanların adaptasyonu" data-en="New hire onboarding">Yeni başlayanların adaptasyonu</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Yeni sistem - süreç adaptasyonu"><span data-tr="Yeni sistem / süreç adaptasyonu" data-en="New system / process adaptation">Yeni sistem / süreç adaptasyonu</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Organizasyonel dönüşüm"><span data-tr="Organizasyonel dönüşüm" data-en="Organizational transformation">Organizasyonel dönüşüm</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Liderlik gelişimi"><span data-tr="Liderlik gelişimi" data-en="Leadership development">Liderlik gelişimi</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="İletişim ve iş birliği geliştirme"><span data-tr="İletişim ve iş birliği" data-en="Communication & collaboration">İletişim ve iş birliği</span></label>
+      </div>
+      <div style="margin-top:12px;">
+        <input type="text" name="egitim_amaci_diger" data-placeholder-tr="Diğer (belirtiniz)..." data-placeholder-en="Other (please specify)..." placeholder="Diğer (belirtiniz)...">
+      </div>
+      <div class="field-error" id="err1" data-tr="Lütfen en az bir seçenek işaretleyin." data-en="Please select at least one option.">Lütfen en az bir seçenek işaretleyin.</div>
+    </div>
   </div>
 
-  <form id="egitimForm">
-
-    <!-- 1. Eğitim amacı -->
-    <div class="section section-required">
-      <div class="section-header">
-        <div class="section-num">1</div>
-        <div class="section-title">Eğitim neden gerekli? Hangi performans problemi çözülmek isteniyor? <span class="required-star">*</span></div>
-      </div>
-      <div class="section-body">
-        <div class="checkbox-grid" id="amacGrid">
-          <label class="check-item"><input type="checkbox" name="egitim_amaci" value="Performans artışı sağlamak"> Performans artışı sağlamak</label>
-          <label class="check-item"><input type="checkbox" name="egitim_amaci" value="Yönetici gelişimi"> Yönetici gelişimi</label>
-          <label class="check-item"><input type="checkbox" name="egitim_amaci" value="Yeni başlayanların adaptasyonu"> Yeni başlayanların adaptasyonu</label>
-          <label class="check-item"><input type="checkbox" name="egitim_amaci" value="Yeni sistem - süreç adaptasyonu"> Yeni sistem / süreç adaptasyonu</label>
-          <label class="check-item"><input type="checkbox" name="egitim_amaci" value="Organizasyonel dönüşüm"> Organizasyonel dönüşüm</label>
-          <label class="check-item"><input type="checkbox" name="egitim_amaci" value="Liderlik gelişimi"> Liderlik gelişimi</label>
-          <label class="check-item"><input type="checkbox" name="egitim_amaci" value="İletişim ve iş birliği geliştirme"> İletişim ve iş birliği geliştirme</label>
-        </div>
-        <div style="margin-top:12px;">
-          <input type="text" name="egitim_amaci_diger" placeholder="Diğer (belirtiniz)...">
-        </div>
-      </div>
+  <!-- 2 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title" data-tr="Eğitime Katılacak Kişi Sayısı <span class='required-star'>*</span>" data-en="Number of Participants <span class='required-star'>*</span>">Eğitime Katılacak Kişi Sayısı <span class="required-star">*</span></div>
     </div>
-
-    <!-- 2. Katılımcı sayısı -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-num">2</div>
-        <div class="section-title">Eğitime Katılacak Kişi Sayısı Kaçtır?</div>
+    <div class="section-body">
+      <div class="number-wrap">
+        <input type="number" name="katilimci_sayisi" min="1" max="10000" data-placeholder-tr="Örn: 25" data-placeholder-en="e.g. 25" placeholder="Örn: 25">
       </div>
-      <div class="section-body">
-        <div class="number-input-wrap">
-          <input type="number" name="katilimci_sayisi" min="1" max="10000" placeholder="Örn: 25">
+      <div class="field-error" id="err2" data-tr="Bu alan zorunludur." data-en="This field is required.">Bu alan zorunludur.</div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title" data-tr="Departman Sayısı ve Adları <span class='required-star'>*</span>" data-en="Number and Names of Departments <span class='required-star'>*</span>">Departman Sayısı ve Adları <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="number-wrap" style="margin-bottom:10px;">
+        <input type="number" name="departman_sayisi" min="1" max="100" data-placeholder-tr="Departman sayısı" data-placeholder-en="Number of departments" placeholder="Departman sayısı">
+      </div>
+      <textarea name="departman_isimleri" data-placeholder-tr="Departman adlarını yazınız... (örn: Satış, İK, Operasyon)" data-placeholder-en="List department names... (e.g. Sales, HR, Operations)" placeholder="Departman adlarını yazınız..."></textarea>
+      <div class="field-error" id="err3" data-tr="Bu alan zorunludur." data-en="This field is required.">Bu alan zorunludur.</div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title" data-tr="Ekip Olgunluk Seviyesi / Hedef Kitle <span class='required-star'>*</span>" data-en="Team Maturity Level / Target Audience <span class='required-star'>*</span>">Ekip Olgunluk Seviyesi / Hedef Kitle <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Yeni"><span data-tr="Yeni" data-en="Entry-level">Yeni</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Gelişmekte"><span data-tr="Gelişmekte" data-en="Developing">Gelişmekte</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Kıdemli"><span data-tr="Kıdemli" data-en="Senior">Kıdemli</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Üst Kademe"><span data-tr="Üst Kademe" data-en="Upper Management">Üst Kademe</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Orta Kademe"><span data-tr="Orta Kademe" data-en="Middle Management">Orta Kademe</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Alt Kademe"><span data-tr="Alt Kademe" data-en="Junior Level">Alt Kademe</span></label>
+      </div>
+      <div class="field-error" id="err4" data-tr="Lütfen en az bir seçenek işaretleyin." data-en="Please select at least one option.">Lütfen en az bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title" data-tr="Eğitim Kapsamı <span class='required-star'>*</span>" data-en="Training Scope <span class='required-star'>*</span>">Eğitim Kapsamı <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="radio" name="egitim_kapsami" value="Departmana Özgü"><span data-tr="Departmana Özgü" data-en="Department-specific">Departmana Özgü</span></label>
+        <label class="opt-item"><input type="radio" name="egitim_kapsami" value="Genel"><span data-tr="Genel" data-en="General">Genel</span></label>
+      </div>
+      <div class="field-error" id="err5" data-tr="Lütfen bir seçenek işaretleyin." data-en="Please select an option.">Lütfen bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title" data-tr="Eğitim Formatı <span class='required-star'>*</span>" data-en="Training Format <span class='required-star'>*</span>">Eğitim Formatı <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="radio" name="egitim_formati" value="Online"><span data-tr="Online" data-en="Online">Online</span></label>
+        <label class="opt-item"><input type="radio" name="egitim_formati" value="Hibrit"><span data-tr="Hibrit" data-en="Hybrid">Hibrit</span></label>
+        <label class="opt-item"><input type="radio" name="egitim_formati" value="Yüz yüze"><span data-tr="Yüz yüze" data-en="In-person">Yüz yüze</span></label>
+      </div>
+      <div class="field-error" id="err6" data-tr="Lütfen bir seçenek işaretleyin." data-en="Please select an option.">Lütfen bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title" data-tr="Eğitim Metodolojisi <span class='required-star'>*</span>" data-en="Training Methodology <span class='required-star'>*</span>">Eğitim Metodolojisi <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="checkbox" name="metodoloji" value="Role-play"><span data-tr="Role-play" data-en="Role-play">Role-play</span></label>
+        <label class="opt-item"><input type="checkbox" name="metodoloji" value="Oyunlaştırma"><span data-tr="Oyunlaştırma" data-en="Gamification">Oyunlaştırma</span></label>
+        <label class="opt-item"><input type="checkbox" name="metodoloji" value="Senaryo"><span data-tr="Senaryo" data-en="Scenario-based">Senaryo</span></label>
+        <label class="opt-item"><input type="checkbox" name="metodoloji" value="Workshop"><span data-tr="Workshop" data-en="Workshop">Workshop</span></label>
+      </div>
+      <div class="field-error" id="err7" data-tr="Lütfen en az bir seçenek işaretleyin." data-en="Please select at least one option.">Lütfen en az bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-title" data-tr="Teori / Pratik Dağılım Beklentisi <span class='required-star'>*</span>" data-en="Theory / Practice Distribution <span class='required-star'>*</span>">Teori / Pratik Dağılım Beklentisi <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="range-wrap">
+        <div class="range-item">
+          <div class="range-label" data-tr="Teori" data-en="Theory">Teori</div>
+          <div class="range-value" id="teoriVal">50%</div>
+          <input type="range" name="teori_yuzdesi" id="teoriRange" min="0" max="100" value="50" step="5">
         </div>
-      </div>
-    </div>
-
-    <!-- 3. Departman -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-num">3</div>
-        <div class="section-title">Eğitime Katılacak Departman Sayısı Kaçtır? Ve bunlar nelerdir?</div>
-      </div>
-      <div class="section-body">
-        <div class="number-input-wrap" style="margin-bottom:12px;">
-          <input type="number" name="departman_sayisi" min="1" max="100" placeholder="Departman sayısı">
-        </div>
-        <textarea name="departman_isimleri" placeholder="Departman isimlerini yazınız... (örn: Satış, İnsan Kaynakları, Operasyon)"></textarea>
-      </div>
-    </div>
-
-    <!-- 4. Ekip olgunluk seviyesi -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-num">4</div>
-        <div class="section-title">Ekip Olgunluk Seviyesi / Hedef Kitle Kademeleri</div>
-      </div>
-      <div class="section-body">
-        <div class="checkbox-grid">
-          <label class="check-item"><input type="checkbox" name="olgunluk_seviyesi" value="Yeni"> Yeni</label>
-          <label class="check-item"><input type="checkbox" name="olgunluk_seviyesi" value="Gelişmekte"> Gelişmekte</label>
-          <label class="check-item"><input type="checkbox" name="olgunluk_seviyesi" value="Kıdemli"> Kıdemli</label>
-          <label class="check-item"><input type="checkbox" name="olgunluk_seviyesi" value="Üst Kademe"> Üst Kademe</label>
-          <label class="check-item"><input type="checkbox" name="olgunluk_seviyesi" value="Orta Kademe"> Orta Kademe</label>
-          <label class="check-item"><input type="checkbox" name="olgunluk_seviyesi" value="Alt Kademe"> Alt Kademe</label>
-        </div>
-      </div>
-    </div>
-
-    <!-- 5. Kapsam -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-num">5</div>
-        <div class="section-title">Eğitim Kapsamı Nasıl Yapılandırılacak?</div>
-      </div>
-      <div class="section-body">
-        <div class="radio-group">
-          <label class="check-item"><input type="radio" name="egitim_kapsami" value="Departmana Özgü"> Departmana Özgü</label>
-          <label class="check-item"><input type="radio" name="egitim_kapsami" value="Genel"> Genel</label>
-        </div>
-      </div>
-    </div>
-
-    <!-- 6. Format -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-num">6</div>
-        <div class="section-title">Eğitim Formatı Tercihi Nedir?</div>
-      </div>
-      <div class="section-body">
-        <div class="radio-group">
-          <label class="check-item"><input type="radio" name="egitim_formati" value="Online"> Online</label>
-          <label class="check-item"><input type="radio" name="egitim_formati" value="Hibrit"> Hibrit</label>
-          <label class="check-item"><input type="radio" name="egitim_formati" value="Yüz yüze"> Yüz yüze</label>
-        </div>
-      </div>
-    </div>
-
-    <!-- 7. Metodoloji -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-num">7</div>
-        <div class="section-title">Eğitim Metodolojisi Tercihi Nedir?</div>
-      </div>
-      <div class="section-body">
-        <div class="checkbox-grid">
-          <label class="check-item"><input type="checkbox" name="metodoloji" value="Role-play"> Role-play</label>
-          <label class="check-item"><input type="checkbox" name="metodoloji" value="Oyunlaştırma"> Oyunlaştırma</label>
-          <label class="check-item"><input type="checkbox" name="metodoloji" value="Senaryo"> Senaryo</label>
-          <label class="check-item"><input type="checkbox" name="metodoloji" value="Workshop"> Workshop</label>
-        </div>
-      </div>
-    </div>
-
-    <!-- 8. Teori/Pratik -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-num">8</div>
-        <div class="section-title">Eğitimin Teori ve Pratik Dağılım Beklentisi</div>
-      </div>
-      <div class="section-body">
-        <div class="range-wrap">
-          <div class="range-item">
-            <div class="range-label">Teori</div>
-            <div class="range-value" id="teoriVal">%50</div>
-            <input type="range" name="teori_yuzdesi" id="teoriRange" min="0" max="100" value="50" step="5">
-          </div>
-          <div class="range-item">
-            <div class="range-label">Pratik</div>
-            <div class="range-value" id="pratikVal">%50</div>
-            <input type="range" name="pratik_yuzdesi" id="pratikRange" min="0" max="100" value="50" step="5" disabled>
-          </div>
-        </div>
-        <div class="range-sum" id="rangeSum">Toplam: %100 ✓</div>
-      </div>
-    </div>
-
-    <!-- 9. Önceki eğitimler -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-num">9</div>
-        <div class="section-title">Katılımcıların Daha Önce Aldığı Eğitimler Nelerdir?</div>
-      </div>
-      <div class="section-body">
-        <textarea name="onceki_egitimler" placeholder="Daha önce alınan eğitimleri yazınız..."></textarea>
-        <div class="hint">Bilgi yoksa boş bırakabilirsiniz.</div>
-      </div>
-    </div>
-
-    <!-- 10. Beklenen değişim -->
-    <div class="section section-required">
-      <div class="section-header">
-        <div class="section-num">10</div>
-        <div class="section-title">Eğitim sonrası katılımcılarda hangi değişiklikleri görmek istiyorsunuz? <span class="required-star">*</span></div>
-      </div>
-      <div class="section-body">
-        <div class="checkbox-grid">
-          <label class="check-item"><input type="checkbox" name="beklenen_degisim" value="Daha etkili iletişim"> Daha etkili iletişim</label>
-          <label class="check-item"><input type="checkbox" name="beklenen_degisim" value="Daha iyi liderlik"> Daha iyi liderlik</label>
-          <label class="check-item"><input type="checkbox" name="beklened_degisim" value="Daha hızlı karar alma"> Daha hızlı karar alma</label>
-          <label class="check-item"><input type="checkbox" name="beklened_degisim" value="Verimlilik artışı"> Verimlilik artışı</label>
-          <label class="check-item"><input type="checkbox" name="beklened_degisim" value="Daha az hata"> Daha az hata</label>
-          <label class="check-item"><input type="checkbox" name="beklened_degisim" value="Daha iyi ekip yönetimi"> Daha iyi ekip yönetimi</label>
+        <div class="range-item">
+          <div class="range-label" data-tr="Pratik" data-en="Practice">Pratik</div>
+          <div class="range-value" id="pratikVal">50%</div>
+          <input type="range" name="pratik_yuzdesi" id="pratikRange" min="0" max="100" value="50" step="5" disabled>
         </div>
       </div>
+      <div class="range-sum" id="rangeSum" data-tr="Toplam: 100% ✓" data-en="Total: 100% ✓">Toplam: 100% ✓</div>
     </div>
+  </div>
 
-    <!-- 11. Öncelik -->
-    <div class="section section-required">
-      <div class="section-header">
-        <div class="section-num">11</div>
-        <div class="section-title">Bu eğitimin öncelik seviyesi nedir? <span class="required-star">*</span></div>
-      </div>
-      <div class="section-body">
-        <div class="radio-group">
-          <label class="check-item"><input type="radio" name="oncelik_seviyesi" value="Kritik (0-3 ay)"> 🔴 Kritik <small>(0–3 ay)</small></label>
-          <label class="check-item"><input type="radio" name="oncelik_seviyesi" value="Yüksek (3-6 ay)"> 🟠 Yüksek <small>(3–6 ay)</small></label>
-          <label class="check-item"><input type="radio" name="oncelik_seviyesi" value="Orta (6-12 ay)"> 🟡 Orta <small>(6–12 ay)</small></label>
-          <label class="check-item"><input type="radio" name="oncelik_seviyesi" value="Düşük"> 🟢 Düşük</label>
-        </div>
-      </div>
+  <!-- 9 -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <div class="section-title" data-tr="Katılımcıların Daha Önce Aldığı Eğitimler <span class='required-star'>*</span>" data-en="Previous Training Received by Participants <span class='required-star'>*</span>">Katılımcıların Daha Önce Aldığı Eğitimler <span class="required-star">*</span></div>
     </div>
-
-    <!-- 12. Süre -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-num">12</div>
-        <div class="section-title">Eğitim ne kadar sürede tamamlanmalı?</div>
-      </div>
-      <div class="section-body">
-        <input type="text" name="egitim_suresi" placeholder="Örn: 3 ay, 2 hafta, 1 günlük workshop...">
-      </div>
+    <div class="section-body">
+      <textarea name="onceki_egitimler" data-placeholder-tr="Daha önce alınan eğitimleri yazınız..." data-placeholder-en="List previously completed trainings..." placeholder="Daha önce alınan eğitimleri yazınız..."></textarea>
+      <div class="field-error" id="err9" data-tr="Bu alan zorunludur." data-en="This field is required.">Bu alan zorunludur.</div>
     </div>
+  </div>
 
-    <!-- SUBMIT -->
-    <div class="submit-wrap">
-      <button type="submit" class="submit-btn" id="submitBtn">Formu Gönder →</button>
+  <!-- 10 -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div class="section-title" data-tr="Eğitim sonrası hangi değişiklikleri görmek istiyorsunuz? <span class='required-star'>*</span>" data-en="What changes do you want to see after training? <span class='required-star'>*</span>">Eğitim sonrası hangi değişiklikleri görmek istiyorsunuz? <span class="required-star">*</span></div>
     </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="checkbox" name="beklenen_degisim" value="Daha etkili iletişim"><span data-tr="Daha etkili iletişim" data-en="More effective communication">Daha etkili iletişim</span></label>
+        <label class="opt-item"><input type="checkbox" name="beklenen_degisim" value="Daha iyi liderlik"><span data-tr="Daha iyi liderlik" data-en="Better leadership">Daha iyi liderlik</span></label>
+        <label class="opt-item"><input type="checkbox" name="beklenen_degisim" value="Daha hızlı karar alma"><span data-tr="Daha hızlı karar alma" data-en="Faster decision making">Daha hızlı karar alma</span></label>
+        <label class="opt-item"><input type="checkbox" name="beklenen_degisim" value="Verimlilik artışı"><span data-tr="Verimlilik artışı" data-en="Productivity increase">Verimlilik artışı</span></label>
+        <label class="opt-item"><input type="checkbox" name="beklenen_degisim" value="Daha az hata"><span data-tr="Daha az hata" data-en="Fewer errors">Daha az hata</span></label>
+        <label class="opt-item"><input type="checkbox" name="beklenen_degisim" value="Daha iyi ekip yönetimi"><span data-tr="Daha iyi ekip yönetimi" data-en="Better team management">Daha iyi ekip yönetimi</span></label>
+      </div>
+      <div class="field-error" id="err10" data-tr="Lütfen en az bir seçenek işaretleyin." data-en="Please select at least one option.">Lütfen en az bir seçenek işaretleyin.</div>
+    </div>
+  </div>
 
-  </form>
+  <!-- 11 -->
+  <div class="section" id="s11">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <div class="section-title" data-tr="Eğitimin Öncelik Seviyesi <span class='required-star'>*</span>" data-en="Training Priority Level <span class='required-star'>*</span>">Eğitimin Öncelik Seviyesi <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="radio" name="oncelik_seviyesi" value="Kritik (0-3 ay)"><span data-tr="Kritik (0–3 ay)" data-en="Critical (0–3 mo)">Kritik (0–3 ay)</span></label>
+        <label class="opt-item"><input type="radio" name="oncelik_seviyesi" value="Yüksek (3-6 ay)"><span data-tr="Yüksek (3–6 ay)" data-en="High (3–6 mo)">Yüksek (3–6 ay)</span></label>
+        <label class="opt-item"><input type="radio" name="oncelik_seviyesi" value="Orta (6-12 ay)"><span data-tr="Orta (6–12 ay)" data-en="Medium (6–12 mo)">Orta (6–12 ay)</span></label>
+        <label class="opt-item"><input type="radio" name="oncelik_seviyesi" value="Düşük"><span data-tr="Düşük" data-en="Low">Düşük</span></label>
+      </div>
+      <div class="field-error" id="err11" data-tr="Lütfen bir seçenek işaretleyin." data-en="Please select an option.">Lütfen bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 12 -->
+  <div class="section" id="s12">
+    <div class="section-header">
+      <div class="section-num">12</div>
+      <div class="section-title" data-tr="Eğitim ne kadar sürede tamamlanmalı? <span class='required-star'>*</span>" data-en="How long should the training take to complete? <span class='required-star'>*</span>">Eğitim ne kadar sürede tamamlanmalı? <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <input type="text" name="egitim_suresi" data-placeholder-tr="Örn: 3 ay, 2 hafta, 1 günlük workshop..." data-placeholder-en="e.g. 3 months, 2 weeks, 1-day workshop..." placeholder="Örn: 3 ay, 2 hafta, 1 günlük workshop...">
+      <div class="field-error" id="err12" data-tr="Bu alan zorunludur." data-en="This field is required.">Bu alan zorunludur.</div>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button type="submit" class="submit-btn" id="submitBtn" data-tr="Formu Gönder →" data-en="Submit Form →">Formu Gönder →</button>
+  </div>
+
+</form>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ============================================================
-// SUPABASE YAPILANDIRMASI — BU İKİ DEĞERİ DEĞİŞTİRİN
-// ============================================================
-const SUPABASE_URL   = 'https://xqjgkusoarezfuqovxsi.supabase.co';
+const SUPABASE_URL = 'https://xqjgkusoarezfuqovxsi.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxamdrdXNvYXJlemZ1cW92eHNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1MjYyMTcsImV4cCI6MjA4ODEwMjIxN30.DrPcI-dMLErRUJcG9u6ry1yiL-RcYAbdctzf9pYN0NQ';
-// ============================================================
 
-// Supabase insert
+// ── LANG ──────────────────────────────────────────
+let currentLang = 'tr';
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.querySelectorAll('[data-tr]').forEach(el => {
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return;
+    el.innerHTML = el.getAttribute('data-' + lang);
+  });
+  document.querySelectorAll('[data-placeholder-tr]').forEach(el => {
+    el.placeholder = el.getAttribute('data-placeholder-' + lang);
+  });
+  document.getElementById('progressLabel').textContent = lang === 'tr'
+    ? 'Tamamlanma: ' + lastPct + '%'
+    : 'Completion: ' + lastPct + '%';
+  teoriVal.textContent = teoriRange.value + '%';
+  pratikVal.textContent = (100 - parseInt(teoriRange.value)) + '%';
+}
+
+// ── OPTION SELECTION ──────────────────────────────
+document.querySelectorAll('.opt-item input').forEach(inp => {
+  inp.addEventListener('change', () => {
+    if (inp.type === 'radio') {
+      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(r => {
+        r.closest('.opt-item').classList.toggle('selected', r.checked);
+      });
+    } else {
+      inp.closest('.opt-item').classList.toggle('selected', inp.checked);
+    }
+    updateProgress();
+  });
+});
+
+// ── RANGE ─────────────────────────────────────────
+const teoriRange = document.getElementById('teoriRange');
+const pratikRange = document.getElementById('pratikRange');
+const teoriVal = document.getElementById('teoriVal');
+const pratikVal = document.getElementById('pratikVal');
+teoriRange.addEventListener('input', () => {
+  const t = parseInt(teoriRange.value);
+  pratikRange.value = 100 - t;
+  teoriVal.textContent = t + '%';
+  pratikVal.textContent = (100 - t) + '%';
+});
+
+// ── PROGRESS ──────────────────────────────────────
+let lastPct = 0;
+function updateProgress() {
+  const checks = [
+    document.querySelectorAll('[name="egitim_amaci"]:checked').length > 0,
+    !!document.querySelector('[name="katilimci_sayisi"]').value,
+    !!document.querySelector('[name="departman_isimleri"]').value,
+    document.querySelectorAll('[name="olgunluk_seviyesi"]:checked').length > 0,
+    !!document.querySelector('[name="egitim_kapsami"]:checked'),
+    !!document.querySelector('[name="egitim_formati"]:checked'),
+    document.querySelectorAll('[name="metodoloji"]:checked').length > 0,
+    document.querySelectorAll('[name="beklenen_degisim"]:checked').length > 0,
+    !!document.querySelector('[name="oncelik_seviyesi"]:checked'),
+    !!document.querySelector('[name="egitim_suresi"]').value,
+    !!document.querySelector('[name="onceki_egitimler"]').value,
+  ];
+  const pct = Math.round(checks.filter(Boolean).length / checks.length * 100);
+  lastPct = pct;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent =
+    (currentLang === 'tr' ? 'Tamamlanma: ' : 'Completion: ') + pct + '%';
+}
+document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', updateProgress));
+
+// ── TOAST ─────────────────────────────────────────
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ── SUPABASE ──────────────────────────────────────
 async function insertToSupabase(payload) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/egitim_formu`, {
     method: 'POST',
@@ -549,167 +641,83 @@ async function insertToSupabase(payload) {
     },
     body: JSON.stringify(payload)
   });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(err);
-  }
+  if (!res.ok) throw new Error(await res.text());
 }
 
-// Toast
-function showToast(msg, isError = false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast' + (isError ? ' error-toast' : '');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 4000);
+// ── VALIDATION ────────────────────────────────────
+function validate() {
+  let ok = true;
+  const show = (id, sectionId) => {
+    document.getElementById(id).classList.add('show');
+    document.getElementById(sectionId).classList.add('has-error');
+    ok = false;
+  };
+  const hide = (id, sectionId) => {
+    document.getElementById(id).classList.remove('show');
+    document.getElementById(sectionId).classList.remove('has-error');
+  };
+
+  const gc = name => [...document.querySelectorAll(`[name="${name}"]:checked`)].map(i => i.value);
+
+  gc('egitim_amaci').length ? hide('err1','s1') : show('err1','s1');
+  document.querySelector('[name="katilimci_sayisi"]').value ? hide('err2','s2') : show('err2','s2');
+  document.querySelector('[name="departman_isimleri"]').value ? hide('err3','s3') : show('err3','s3');
+  gc('olgunluk_seviyesi').length ? hide('err4','s4') : show('err4','s4');
+  document.querySelector('[name="egitim_kapsami"]:checked') ? hide('err5','s5') : show('err5','s5');
+  document.querySelector('[name="egitim_formati"]:checked') ? hide('err6','s6') : show('err6','s6');
+  gc('metodoloji').length ? hide('err7','s7') : show('err7','s7');
+  document.querySelector('[name="onceki_egitimler"]').value ? hide('err9','s9') : show('err9','s9');
+  gc('beklenen_degisim').length ? hide('err10','s10') : show('err10','s10');
+  document.querySelector('[name="oncelik_seviyesi"]:checked') ? hide('err11','s11') : show('err11','s11');
+  document.querySelector('[name="egitim_suresi"]').value ? hide('err12','s12') : show('err12','s12');
+
+  return ok;
 }
 
-// Checkbox/radio seçili görünüm
-document.querySelectorAll('.check-item input').forEach(inp => {
-  inp.addEventListener('change', () => {
-    if (inp.type === 'radio') {
-      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(r => {
-        r.closest('.check-item').classList.toggle('selected', r.checked);
-      });
-    } else {
-      inp.closest('.check-item').classList.toggle('selected', inp.checked);
-    }
-    updateProgress();
-  });
-});
-
-// Teori / Pratik slider
-const teoriRange = document.getElementById('teoriRange');
-const pratikRange = document.getElementById('pratikRange');
-const teoriVal = document.getElementById('teoriVal');
-const pratikVal = document.getElementById('pratikVal');
-const rangeSum = document.getElementById('rangeSum');
-
-teoriRange.addEventListener('input', () => {
-  const t = parseInt(teoriRange.value);
-  const p = 100 - t;
-  pratikRange.value = p;
-  teoriVal.textContent = `%${t}`;
-  pratikVal.textContent = `%${p}`;
-  rangeSum.textContent = `Toplam: %100 ✓`;
-  rangeSum.className = 'range-sum';
-});
-
-// Progress bar
-function updateProgress() {
-  const required = [
-    document.querySelectorAll('[name="egitim_amaci"]:checked').length > 0,
-    document.querySelectorAll('[name="beklened_degisim"]:checked, [name="beklenen_degisim"]:checked').length > 0,
-    document.querySelector('[name="oncelik_seviyesi"]:checked') !== null
-  ];
-  const filled = required.filter(Boolean).length;
-  const pct = Math.round((filled / required.length) * 100);
-  document.getElementById('progressBar').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `Form tamamlanma durumu: %${pct}`;
-}
-
-// Input changes for progress
-document.querySelectorAll('input, textarea, select').forEach(el => {
-  el.addEventListener('input', updateProgress);
-});
-
-// Form submit
-document.getElementById('egitimForm').addEventListener('submit', async (e) => {
+// ── SUBMIT ────────────────────────────────────────
+document.getElementById('egitimForm').addEventListener('submit', async e => {
   e.preventDefault();
+  if (!validate()) {
+    document.querySelector('.has-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
   const btn = document.getElementById('submitBtn');
-
-  // Collect checkboxes
-  const getChecked = (name) =>
-    [...document.querySelectorAll(`[name="${name}"]:checked`)].map(i => i.value);
-
-  // Basic validation
-  if (getChecked('egitim_amaci').length === 0) {
-    showToast('⚠️ Lütfen en az bir eğitim amacı seçin.', true);
-    return;
-  }
-  if (!document.querySelector('[name="oncelik_seviyesi"]:checked')) {
-    showToast('⚠️ Lütfen öncelik seviyesi seçin.', true);
-    return;
-  }
-
+  const gc = name => [...document.querySelectorAll(`[name="${name}"]:checked`)].map(i => i.value);
   const payload = {
-    egitim_amaci: getChecked('egitim_amaci'),
+    egitim_amaci: gc('egitim_amaci'),
     egitim_amaci_diger: document.querySelector('[name="egitim_amaci_diger"]').value || null,
     katilimci_sayisi: parseInt(document.querySelector('[name="katilimci_sayisi"]').value) || null,
     departman_sayisi: parseInt(document.querySelector('[name="departman_sayisi"]').value) || null,
     departman_isimleri: document.querySelector('[name="departman_isimleri"]').value || null,
-    olgunluk_seviyesi: getChecked('olgunluk_seviyesi'),
+    olgunluk_seviyesi: gc('olgunluk_seviyesi'),
     egitim_kapsami: document.querySelector('[name="egitim_kapsami"]:checked')?.value || null,
     egitim_formati: document.querySelector('[name="egitim_formati"]:checked')?.value || null,
-    metodoloji: getChecked('metodoloji'),
+    metodoloji: gc('metodoloji'),
     teori_yuzdesi: parseInt(teoriRange.value),
     pratik_yuzdesi: 100 - parseInt(teoriRange.value),
     onceki_egitimler: document.querySelector('[name="onceki_egitimler"]').value || null,
-    beklenen_degisim: [
-      ...getChecked('beklenen_degisim'),
-      ...getChecked('beklened_degisim')
-    ],
+    beklenen_degisim: gc('beklenen_degisim'),
     oncelik_seviyesi: document.querySelector('[name="oncelik_seviyesi"]:checked')?.value || null,
     egitim_suresi: document.querySelector('[name="egitim_suresi"]').value || null,
   };
-
   btn.disabled = true;
-  btn.textContent = 'Gönderiliyor...';
-
+  btn.textContent = currentLang === 'tr' ? 'Gönderiliyor...' : 'Submitting...';
   try {
     await insertToSupabase(payload);
-    showToast('✅ Form başarıyla gönderildi! Teşekkürler.');
+    showToast(currentLang === 'tr' ? '✓ Form başarıyla gönderildi!' : '✓ Form submitted successfully!');
     document.getElementById('egitimForm').reset();
-    document.querySelectorAll('.check-item').forEach(el => el.classList.remove('selected'));
-    teoriVal.textContent = '%50';
-    pratikVal.textContent = '%50';
-    teoriRange.value = 50;
+    document.querySelectorAll('.opt-item').forEach(el => el.classList.remove('selected'));
+    teoriVal.textContent = '50%'; pratikVal.textContent = '50%'; teoriRange.value = 50;
     updateProgress();
   } catch (err) {
-    console.error(err);
-    showToast('❌ Hata oluştu: ' + err.message, true);
+    showToast('Error: ' + err.message, true);
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Formu Gönder →';
+    btn.textContent = currentLang === 'tr' ? 'Formu Gönder →' : 'Submit Form →';
   }
 });
 
 updateProgress();
 </script>
-
-<!--
-=============================================================
-SUPABASE SQL — Tablo oluşturmak için bu kodu çalıştırın:
-=============================================================
-
-create table egitim_formu (
-  id                  uuid default gen_random_uuid() primary key,
-  created_at          timestamptz default now(),
-  egitim_amaci        text[],
-  egitim_amaci_diger  text,
-  katilimci_sayisi    int,
-  departman_sayisi    int,
-  departman_isimleri  text,
-  olgunluk_seviyesi   text[],
-  egitim_kapsami      text,
-  egitim_formati      text,
-  metodoloji          text[],
-  teori_yuzdesi       int,
-  pratik_yuzdesi      int,
-  onceki_egitimler    text,
-  beklenen_degisim    text[],
-  oncelik_seviyesi    text,
-  egitim_suresi       text
-);
-
--- Row Level Security (isteğe bağlı ama önerilir):
-alter table egitim_formu enable row level security;
-
-create policy "Herkes ekleyebilir"
-  on egitim_formu for insert
-  with check (true);
-
-=============================================================
--->
 </body>
 </html>
