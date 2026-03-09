@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eğitim İhtiyaç Analizi Formu | UKXperience</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000;
+    --white: #ffffff;
+    --gray-100: #f5f5f5;
+    --gray-200: #e8e8e8;
+    --gray-400: #999999;
+    --gray-600: #555555;
+    --shadow: 0 1px 4px rgba(0,0,0,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--gray-100);
+    color: var(--black);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 40px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-logo img { height: 44px; }
+  .lang-switch { display: flex; gap: 4px; }
+  .lang-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 600; letter-spacing: 1px;
+    padding: 6px 16px; border-radius: 2px; cursor: pointer;
+    border: 1.5px solid var(--black);
+    background: transparent; color: var(--black);
+    transition: all 0.15s;
+  }
+  .lang-btn.active, .lang-btn:hover { background: var(--black); color: var(--white); }
+  .header {
+    background: var(--black); color: var(--white);
+    padding: 52px 40px 44px; text-align: center;
+  }
+  .header-badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase; color: var(--white);
+    border: 1px solid rgba(255,255,255,0.4); padding: 4px 16px; margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: clamp(26px, 4vw, 42px); font-weight: 300;
+    letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 10px;
+  }
+  .header h1 strong { font-weight: 700; }
+  .header p { font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 300; }
+  .progress-wrap {
+    background: var(--black); padding: 0 40px 24px;
+    display: flex; justify-content: center;
+  }
+  .progress-inner { width: 100%; max-width: 720px; }
+  .progress-bar-outer { background: rgba(255,255,255,0.15); height: 2px; border-radius: 1px; }
+  .progress-bar-fill { height: 100%; background: var(--white); border-radius: 1px; width: 0%; transition: width 0.4s ease; }
+  .progress-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 8px; text-align: right; letter-spacing: 0.5px; }
+  .container { max-width: 760px; margin: 36px auto 0; padding: 0 24px; }
+  .section {
+    background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: 4px; margin-bottom: 16px; overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .section:focus-within { border-color: var(--black); box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .section.has-error { border-color: #cc0000; }
+  .section-header { display: flex; align-items: flex-start; gap: 16px; padding: 22px 24px 0; }
+  .section-num {
+    width: 26px; height: 26px; min-width: 26px;
+    background: var(--black); color: var(--white);
+    font-size: 11px; font-weight: 700; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .section-title { font-size: 15px; font-weight: 500; color: var(--black); line-height: 1.4; }
+  .required-star { color: var(--black); margin-left: 3px; }
+  .section-body { padding: 14px 24px 22px 66px; }
+  input[type="text"], input[type="number"], textarea {
+    width: 100%; font-family: 'Inter', sans-serif; font-size: 14px;
+    color: var(--black); background: var(--gray-100);
+    border: 1px solid var(--gray-200); border-radius: 3px;
+    padding: 10px 12px; outline: none;
+    transition: border-color 0.2s, background 0.2s; resize: vertical;
+  }
+  input:focus, textarea:focus { border-color: var(--black); background: var(--white); }
+  textarea { min-height: 80px; }
+  .options-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .opt-item {
+    display: flex; align-items: center; gap: 10px;
+    border: 1.5px solid var(--gray-200); border-radius: 100px;
+    padding: 8px 18px 8px 12px; cursor: pointer;
+    transition: all 0.15s; font-size: 13px; font-weight: 400;
+    user-select: none; color: var(--gray-600);
+  }
+  .opt-item:hover { border-color: var(--black); color: var(--black); }
+  .opt-item.selected { background: var(--black); border-color: var(--black); color: var(--white); font-weight: 500; }
+  .opt-item input[type="checkbox"], .opt-item input[type="radio"] {
+    appearance: none; -webkit-appearance: none;
+    width: 16px; height: 16px; min-width: 16px; border-radius: 50%;
+    border: 1.5px solid currentColor; background: transparent;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .opt-item input:checked { background: var(--white); border-color: var(--white); }
+  .opt-item input:checked::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--black); position: absolute;
+  }
+  /* COMBOBOX / MULTI-SELECT — inline expand */
+  .combo-wrap { margin-top: 6px; border: 1px solid var(--gray-200); border-radius: 3px; overflow: hidden; transition: border-color 0.2s; }
+  .combo-wrap.open { border-color: var(--black); }
+  .combo-trigger {
+    width: 100%; font-family: 'Inter', sans-serif; font-size: 14px;
+    color: var(--black); background: var(--gray-100);
+    border: none; padding: 12px 14px; outline: none; cursor: pointer;
+    text-align: left; display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.2s;
+  }
+  .combo-wrap.open .combo-trigger { background: var(--white); }
+  .combo-arrow { font-size: 11px; color: var(--gray-400); transition: transform 0.25s; flex-shrink: 0; margin-left: 8px; }
+  .combo-wrap.open .combo-arrow { transform: rotate(180deg); }
+  .combo-dropdown {
+    display: none;
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+  }
+  .combo-wrap.open .combo-dropdown { display: block; }
+  .combo-opt {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px; cursor: pointer; font-size: 13px;
+    color: var(--gray-600); transition: background 0.1s;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .combo-opt:last-child { border-bottom: none; }
+  .combo-opt:hover { background: var(--gray-100); color: var(--black); }
+  .combo-opt.selected { background: var(--black); color: var(--white); }
+  .combo-opt .combo-check {
+    width: 16px; height: 16px; min-width: 16px; border-radius: 50%;
+    border: 1.5px solid currentColor; background: transparent;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .combo-opt.selected .combo-check::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--white);
+  }
+  .combo-selected-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .combo-tag {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--black); color: var(--white);
+    font-size: 12px; padding: 4px 10px; border-radius: 100px;
+  }
+  .combo-tag-remove { cursor: pointer; opacity: 0.7; font-size: 14px; line-height: 1; }
+  .combo-tag-remove:hover { opacity: 1; }
+  /* RANGE */
+  .range-wrap { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 6px; }
+  .range-item { flex: 1; min-width: 160px; }
+  .range-label { font-size: 12px; color: var(--gray-400); margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .range-value { font-size: 28px; font-weight: 700; color: var(--black); margin-bottom: 8px; }
+  input[type="range"] {
+    width: 100%; accent-color: var(--black); height: 2px;
+    background: var(--gray-200); border: none; padding: 0; border-radius: 1px; cursor: pointer;
+  }
+  .range-sum { font-size: 11px; color: var(--gray-400); margin-top: 10px; }
+  .number-wrap { max-width: 160px; }
+  .field-error { font-size: 11px; color: #cc0000; margin-top: 5px; display: none; }
+  .field-error.show { display: block; }
+  .submit-wrap { text-align: center; margin-top: 32px; }
+  .submit-btn {
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    background: var(--black); color: var(--white); border: none;
+    padding: 16px 56px; border-radius: 2px; cursor: pointer; transition: opacity 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.8; }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .toast {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--black); color: var(--white);
+    padding: 14px 24px; border-radius: 3px;
+    font-size: 13px; font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    opacity: 0; transform: translateY(12px);
+    transition: all 0.3s; z-index: 999; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.error { background: #333; border-left: 3px solid #ff4444; }
+  @media (max-width: 600px) {
+    .section-body { padding-left: 24px; }
+    .topbar { padding: 12px 20px; }
+    .header { padding: 36px 20px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <img src="data:image/jpeg;base64,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" alt="UKXperience">
+  </div>
+  <div class="lang-switch">
+    <button class="lang-btn active" onclick="setLang('tr')" id="btn-tr">TR</button>
+    <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
+</div>
+
+<div class="header">
+  <div class="header-badge" data-tr="Eğitim Talep Sistemi" data-en="Training Request System">Eğitim Talep Sistemi</div>
+  <h1><strong data-tr="Eğitim İhtiyaç" data-en="Training Needs">Eğitim İhtiyaç</strong><br><span data-tr="Analizi Formu" data-en="Analysis Form">Analizi Formu</span></h1>
+  <p data-tr="Lütfen tüm alanları eksiksiz doldurunuz." data-en="Please fill in all fields completely.">Lütfen tüm alanları eksiksiz doldurunuz.</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-bar-outer"><div class="progress-bar-fill" id="progressBar"></div></div>
+    <div class="progress-label" id="progressLabel">0%</div>
+  </div>
+</div>
+
+<div class="container">
+<form id="egitimForm">
+
+  <!-- 1 -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title" data-tr="Eğitim neden gerekli? Bu eğitimi talep etmenizin temel amacı nedir? <span class='required-star'>*</span>" data-en="Why is training needed? What is the main purpose of this request? <span class='required-star'>*</span>">Eğitim neden gerekli? Bu eğitimi talep etmenizin temel amacı nedir? <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Performans artışı sağlamak"><span data-tr="Performans artışı" data-en="Performance improvement">Performans artışı</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Yönetici gelişimi"><span data-tr="Yönetici gelişimi" data-en="Manager development">Yönetici gelişimi</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Yeni başlayanların adaptasyonu"><span data-tr="Yeni başlayanların adaptasyonu" data-en="New hire onboarding">Yeni başlayanların adaptasyonu</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Yeni sistem - süreç adaptasyonu"><span data-tr="Yeni sistem / süreç adaptasyonu" data-en="New system / process adaptation">Yeni sistem / süreç adaptasyonu</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Organizasyonel dönüşüm"><span data-tr="Organizasyonel dönüşüm" data-en="Organizational transformation">Organizasyonel dönüşüm</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="Liderlik gelişimi"><span data-tr="Liderlik gelişimi" data-en="Leadership development">Liderlik gelişimi</span></label>
+        <label class="opt-item"><input type="checkbox" name="egitim_amaci" value="İletişim ve iş birliği geliştirme"><span data-tr="İletişim ve iş birliği" data-en="Communication & collaboration">İletişim ve iş birliği</span></label>
+      </div>
+      <div style="margin-top:12px;">
+        <input type="text" name="egitim_amaci_diger" data-placeholder-tr="Diğer (belirtiniz)..." data-placeholder-en="Other (please specify)..." placeholder="Diğer (belirtiniz)...">
+      </div>
+      <div class="field-error" id="err1" data-tr="Lütfen en az bir seçenek işaretleyin." data-en="Please select at least one option.">Lütfen en az bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title" data-tr="Eğitime Katılacak Kişi Sayısı <span class='required-star'>*</span>" data-en="Number of Participants <span class='required-star'>*</span>">Eğitime Katılacak Kişi Sayısı <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="number-wrap">
+        <input type="number" name="katilimci_sayisi" min="1" max="10000" data-placeholder-tr="Örn: 25" data-placeholder-en="e.g. 25" placeholder="Örn: 25">
+      </div>
+      <div class="field-error" id="err2" data-tr="Bu alan zorunludur." data-en="This field is required.">Bu alan zorunludur.</div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title" data-tr="Departman Sayısı ve Adları <span class='required-star'>*</span>" data-en="Number and Names of Departments <span class='required-star'>*</span>">Departman Sayısı ve Adları <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="number-wrap" style="margin-bottom:10px;">
+        <input type="number" name="departman_sayisi" min="1" max="100" data-placeholder-tr="Departman sayısı" data-placeholder-en="Number of departments" placeholder="Departman sayısı">
+      </div>
+      <textarea name="departman_isimleri" data-placeholder-tr="Departman adlarını yazınız... (örn: Satış, İK, Operasyon)" data-placeholder-en="List department names... (e.g. Sales, HR, Operations)" placeholder="Departman adlarını yazınız..."></textarea>
+      <div class="field-error" id="err3" data-tr="Bu alan zorunludur." data-en="This field is required.">Bu alan zorunludur.</div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title" data-tr="Ekip Olgunluk Seviyesi / Hedef Kitle <span class='required-star'>*</span>" data-en="Team Maturity Level / Target Audience <span class='required-star'>*</span>">Ekip Olgunluk Seviyesi / Hedef Kitle <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Yeni"><span data-tr="Yeni" data-en="Entry-level">Yeni</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Gelişmekte"><span data-tr="Gelişmekte" data-en="Developing">Gelişmekte</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Kıdemli"><span data-tr="Kıdemli" data-en="Senior">Kıdemli</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Üst Kademe"><span data-tr="Üst Kademe" data-en="Upper Management">Üst Kademe</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Orta Kademe"><span data-tr="Orta Kademe" data-en="Middle Management">Orta Kademe</span></label>
+        <label class="opt-item"><input type="checkbox" name="olgunluk_seviyesi" value="Alt Kademe"><span data-tr="Alt Kademe" data-en="Junior Level">Alt Kademe</span></label>
+      </div>
+      <div class="field-error" id="err4" data-tr="Lütfen en az bir seçenek işaretleyin." data-en="Please select at least one option.">Lütfen en az bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title" data-tr="Eğitim Kapsamı <span class='required-star'>*</span>" data-en="Training Scope <span class='required-star'>*</span>">Eğitim Kapsamı <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="radio" name="egitim_kapsami" value="Departmana Özgü"><span data-tr="Departmana Özgü" data-en="Department-specific">Departmana Özgü</span></label>
+        <label class="opt-item"><input type="radio" name="egitim_kapsami" value="Genel"><span data-tr="Genel" data-en="General">Genel</span></label>
+      </div>
+      <div class="field-error" id="err5" data-tr="Lütfen bir seçenek işaretleyin." data-en="Please select an option.">Lütfen bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title" data-tr="Eğitim Formatı <span class='required-star'>*</span>" data-en="Training Format <span class='required-star'>*</span>">Eğitim Formatı <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="radio" name="egitim_formati" value="Online"><span data-tr="Online" data-en="Online">Online</span></label>
+        <label class="opt-item"><input type="radio" name="egitim_formati" value="Hibrit"><span data-tr="Hibrit" data-en="Hybrid">Hibrit</span></label>
+        <label class="opt-item"><input type="radio" name="egitim_formati" value="Yüz yüze"><span data-tr="Yüz yüze" data-en="In-person">Yüz yüze</span></label>
+      </div>
+      <div class="field-error" id="err6" data-tr="Lütfen bir seçenek işaretleyin." data-en="Please select an option.">Lütfen bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title" data-tr="Eğitim Metodolojisi <span class='required-star'>*</span>" data-en="Training Methodology <span class='required-star'>*</span>">Eğitim Metodolojisi <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="checkbox" name="metodoloji" value="Role-play"><span data-tr="Role-play" data-en="Role-play">Role-play</span></label>
+        <label class="opt-item"><input type="checkbox" name="metodoloji" value="Oyunlaştırma"><span data-tr="Oyunlaştırma" data-en="Gamification">Oyunlaştırma</span></label>
+        <label class="opt-item"><input type="checkbox" name="metodoloji" value="Senaryo"><span data-tr="Senaryo" data-en="Scenario-based">Senaryo</span></label>
+        <label class="opt-item"><input type="checkbox" name="metodoloji" value="Workshop"><span data-tr="Workshop" data-en="Workshop">Workshop</span></label>
+      </div>
+      <div class="field-error" id="err7" data-tr="Lütfen en az bir seçenek işaretleyin." data-en="Please select at least one option.">Lütfen en az bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div class="section-title" data-tr="Teori / Pratik Dağılım Beklentisi <span class='required-star'>*</span>" data-en="Theory / Practice Distribution <span class='required-star'>*</span>">Teori / Pratik Dağılım Beklentisi <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="range-wrap">
+        <div class="range-item">
+          <div class="range-label" data-tr="Teori" data-en="Theory">Teori</div>
+          <div class="range-value" id="teoriVal">50%</div>
+          <input type="range" name="teori_yuzdesi" id="teoriRange" min="0" max="100" value="50" step="5">
+        </div>
+        <div class="range-item">
+          <div class="range-label" data-tr="Pratik" data-en="Practice">Pratik</div>
+          <div class="range-value" id="pratikVal">50%</div>
+          <input type="range" name="pratik_yuzdesi" id="pratikRange" min="0" max="100" value="50" step="5" disabled>
+        </div>
+      </div>
+      <div class="range-sum" id="rangeSum">Toplam: 100% ✓</div>
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <div class="section-title" data-tr="Katılımcıların Daha Önce Aldığı Eğitimler <span class='required-star'>*</span>" data-en="Previous Training Received by Participants <span class='required-star'>*</span>">Katılımcıların Daha Önce Aldığı Eğitimler <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <textarea name="onceki_egitimler" data-placeholder-tr="Daha önce alınan eğitimleri yazınız..." data-placeholder-en="List previously completed trainings..." placeholder="Daha önce alınan eğitimleri yazınız..."></textarea>
+      <div class="field-error" id="err9" data-tr="Bu alan zorunludur." data-en="This field is required.">Bu alan zorunludur.</div>
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div class="section-title" data-tr="Şu anda gözlemlediğiniz temel gelişim ihtiyaç alanları nelerdir? <span class='required-star'>*</span>" data-en="What are the core development need areas you currently observe? <span class='required-star'>*</span>">Şu anda gözlemlediğiniz temel gelişim ihtiyaç alanları nelerdir? <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="options-grid">
+        <label class="opt-item"><input type="checkbox" name="gelisim_ihtiyac_alanlari" value="İletişim eksikliği"><span data-tr="İletişim eksikliği" data-en="Communication gap">İletişim eksikliği</span></label>
+        <label class="opt-item"><input type="checkbox" name="gelisim_ihtiyac_alanlari" value="Liderlik eksikliği"><span data-tr="Liderlik eksikliği" data-en="Leadership gap">Liderlik eksikliği</span></label>
+        <label class="opt-item"><input type="checkbox" name="gelisim_ihtiyac_alanlari" value="Teknik bilgi eksikliği"><span data-tr="Teknik bilgi eksikliği" data-en="Technical knowledge gap">Teknik bilgi eksikliği</span></label>
+        <label class="opt-item"><input type="checkbox" name="gelisim_ihtiyac_alanlari" value="Süreç yönetimi eksikliği"><span data-tr="Süreç yönetimi eksikliği" data-en="Process management gap">Süreç yönetimi eksikliği</span></label>
+        <label class="opt-item"><input type="checkbox" name="gelisim_ihtiyac_alanlari" value="Zaman yönetimi eksikliği"><span data-tr="Zaman yönetimi eksikliği" data-en="Time management gap">Zaman yönetimi eksikliği</span></label>
+        <label class="opt-item"><input type="checkbox" name="gelisim_ihtiyac_alanlari" value="Problem çözme eksikliği"><span data-tr="Problem çözme eksikliği" data-en="Problem solving gap">Problem çözme eksikliği</span></label>
+      </div>
+      <div class="field-error" id="err10" data-tr="Lütfen en az bir seçenek işaretleyin." data-en="Please select at least one option.">Lütfen en az bir seçenek işaretleyin.</div>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <div class="section" id="s11">
+    <div class="section-header">
+      <div class="section-num">11</div>
+      <div class="section-title" data-tr="Eğitimin tamamlanması için hedef zaman aralığı nedir? <span class='required-star'>*</span>" data-en="What is the target timeframe for completing the training? <span class='required-star'>*</span>">Eğitimin tamamlanması için hedef zaman aralığı nedir? <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <textarea name="hedef_zaman_araligi" data-placeholder-tr="Örn: 3 ay içinde, Q2 sonuna kadar, Aralık 2026..." data-placeholder-en="e.g. Within 3 months, by end of Q2, December 2026..." placeholder="Örn: 3 ay içinde, Q2 sonuna kadar..."></textarea>
+      <div class="field-error" id="err11" data-tr="Bu alan zorunludur." data-en="This field is required.">Bu alan zorunludur.</div>
+    </div>
+  </div>
+
+  <!-- 12 — COMBOBOX -->
+  <div class="section" id="s12">
+    <div class="section-header">
+      <div class="section-num">12</div>
+      <div class="section-title" data-tr="Personelin yetkinlik matrisinde öncelikli giderilmesi gereken stratejik eksiklikler nelerdir? <span class='required-star'>*</span>" data-en="What are the priority strategic gaps in the personnel competency matrix? <span class='required-star'>*</span>">Personelin yetkinlik matrisinde öncelikli giderilmesi gereken stratejik eksiklikler nelerdir? <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <div class="combo-wrap" id="comboWrap">
+        <button type="button" class="combo-trigger" id="comboTrigger" onclick="toggleCombo()">
+          <span id="comboPlaceholder" data-tr="Seçiniz (birden fazla seçebilirsiniz)" data-en="Select (multiple choices allowed)">Seçiniz (birden fazla seçebilirsiniz)</span>
+          <span class="combo-arrow">▼</span>
+        </button>
+        <div class="combo-dropdown" id="comboDropdown">
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Stratejik Düşünme ve Planlama')"><div class="combo-check"></div><span data-tr="Stratejik Düşünme ve Planlama" data-en="Strategic Thinking & Planning">Stratejik Düşünme ve Planlama</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Duygusal Zeka ve Empati')"><div class="combo-check"></div><span data-tr="Duygusal Zeka ve Empati" data-en="Emotional Intelligence & Empathy">Duygusal Zeka ve Empati</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Dijital Dönüşüm ve Teknoloji Kullanımı')"><div class="combo-check"></div><span data-tr="Dijital Dönüşüm ve Teknoloji Kullanımı" data-en="Digital Transformation & Technology Use">Dijital Dönüşüm ve Teknoloji Kullanımı</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Değişim Yönetimi ve Esneklik')"><div class="combo-check"></div><span data-tr="Değişim Yönetimi ve Esneklik" data-en="Change Management & Adaptability">Değişim Yönetimi ve Esneklik</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Müşteri Odaklılık ve Deneyim Yönetimi')"><div class="combo-check"></div><span data-tr="Müşteri Odaklılık ve Deneyim Yönetimi" data-en="Customer Focus & Experience Management">Müşteri Odaklılık ve Deneyim Yönetimi</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Veri Analizi ve Karar Verme')"><div class="combo-check"></div><span data-tr="Veri Analizi ve Karar Verme" data-en="Data Analysis & Decision Making">Veri Analizi ve Karar Verme</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Yaratıcılık ve İnovasyon')"><div class="combo-check"></div><span data-tr="Yaratıcılık ve İnovasyon" data-en="Creativity & Innovation">Yaratıcılık ve İnovasyon</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'İletişim eksikliği')"><div class="combo-check"></div><span data-tr="İletişim eksikliği" data-en="Communication gap">İletişim eksikliği</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Liderlik eksikliği')"><div class="combo-check"></div><span data-tr="Liderlik eksikliği" data-en="Leadership gap">Liderlik eksikliği</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Teknik bilgi eksikliği')"><div class="combo-check"></div><span data-tr="Teknik bilgi eksikliği" data-en="Technical knowledge gap">Teknik bilgi eksikliği</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Süreç yönetimi eksikliği')"><div class="combo-check"></div><span data-tr="Süreç yönetimi eksikliği" data-en="Process management gap">Süreç yönetimi eksikliği</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Zaman yönetimi eksikliği')"><div class="combo-check"></div><span data-tr="Zaman yönetimi eksikliği" data-en="Time management gap">Zaman yönetimi eksikliği</span></div>
+          <div class="combo-opt" onclick="toggleComboOpt(this, 'Problem çözme eksikliği')"><div class="combo-check"></div><span data-tr="Problem çözme eksikliği" data-en="Problem solving gap">Problem çözme eksikliği</span></div>
+        </div>
+      </div>
+      <div class="combo-selected-tags" id="comboTags"></div>
+      <input type="hidden" name="stratejik_eksiklikler" id="stratejikInput">
+      <div class="field-error" id="err12" data-tr="Lütfen en az bir seçenek seçin." data-en="Please select at least one option.">Lütfen en az bir seçenek seçin.</div>
+    </div>
+  </div>
+
+  <!-- 13 -->
+  <div class="section" id="s13">
+    <div class="section-header">
+      <div class="section-num">13</div>
+      <div class="section-title" data-tr="Eğitim sonrası katılımcılarda hangi somut değişimleri gözlemlemeyi hedefliyorsunuz? <span class='required-star'>*</span>" data-en="What concrete changes do you aim to observe in participants after training? <span class='required-star'>*</span>">Eğitim sonrası katılımcılarda hangi somut değişimleri gözlemlemeyi hedefliyorsunuz? <span class="required-star">*</span></div>
+    </div>
+    <div class="section-body">
+      <textarea name="beklenen_degisim_acik" data-placeholder-tr="Profesyonel yetkinlik ve davranış modellerinde beklediğiniz değişimleri açıklayınız..." data-placeholder-en="Describe the expected changes in professional competencies and behavioral models..." placeholder="Profesyonel yetkinlik ve davranış modellerinde beklediğiniz değişimleri açıklayınız..."></textarea>
+      <div class="field-error" id="err13" data-tr="Bu alan zorunludur." data-en="This field is required.">Bu alan zorunludur.</div>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button type="submit" class="submit-btn" id="submitBtn" data-tr="Formu Gönder →" data-en="Submit Form →">Formu Gönder →</button>
+  </div>
+
+</form>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://xqjgkusoarezfuqovxsi.supabase.co';
+const SUPABASE_ANON_KEY = 'SIZIN_ANON_KEY';
+
+// ── COMBOBOX ──────────────────────────────────────
+let comboValues = [];
+function toggleCombo() {
+  document.getElementById('comboWrap').classList.toggle('open');
+}
+function toggleComboOpt(el, val) {
+  const idx = comboValues.indexOf(val);
+  if (idx > -1) {
+    comboValues.splice(idx, 1);
+    el.classList.remove('selected');
+  } else {
+    comboValues.push(val);
+    el.classList.add('selected');
+  }
+  updateComboTags();
+  updateProgress();
+}
+function removeComboVal(val) {
+  comboValues = comboValues.filter(v => v !== val);
+  document.querySelectorAll('.combo-opt').forEach(el => {
+    const span = el.querySelector('span');
+    if (span && (span.getAttribute('data-tr') === val || span.getAttribute('data-en') === val || el.getAttribute('data-val') === val)) {
+      el.classList.remove('selected');
+    }
+  });
+  updateComboTags();
+  updateProgress();
+}
+function updateComboTags() {
+  const tagsEl = document.getElementById('comboTags');
+  const ph = document.getElementById('comboPlaceholder');
+  document.getElementById('stratejikInput').value = comboValues.join(', ');
+  tagsEl.innerHTML = comboValues.map(v =>
+    `<div class="combo-tag">${v}<span class="combo-tag-remove" onclick="removeComboVal('${v.replace(/'/g,"\\'")}')">×</span></div>`
+  ).join('');
+  ph.textContent = comboValues.length === 0
+    ? (currentLang === 'tr' ? 'Seçiniz (birden fazla seçebilirsiniz)' : 'Select (multiple choices allowed)')
+    : (currentLang === 'tr' ? comboValues.length + ' seçenek seçildi' : comboValues.length + ' option(s) selected');
+}
+document.addEventListener('click', e => {
+  if (!document.getElementById('comboWrap').contains(e.target)) {
+    document.getElementById('comboDropdown').classList.remove('open');
+    document.getElementById('comboTrigger').classList.remove('open');
+  }
+});
+
+// ── LANG ──────────────────────────────────────────
+let currentLang = 'tr';
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.querySelectorAll('[data-tr]').forEach(el => {
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return;
+    el.innerHTML = el.getAttribute('data-' + lang);
+  });
+  document.querySelectorAll('[data-placeholder-tr]').forEach(el => {
+    el.placeholder = el.getAttribute('data-placeholder-' + lang);
+  });
+  updateComboTags();
+  document.getElementById('progressLabel').textContent =
+    (lang === 'tr' ? 'Tamamlanma: ' : 'Completion: ') + lastPct + '%';
+}
+
+// ── OPTION SELECTION ──────────────────────────────
+document.querySelectorAll('.opt-item input').forEach(inp => {
+  inp.addEventListener('change', () => {
+    if (inp.type === 'radio') {
+      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(r => {
+        r.closest('.opt-item').classList.toggle('selected', r.checked);
+      });
+    } else {
+      inp.closest('.opt-item').classList.toggle('selected', inp.checked);
+    }
+    updateProgress();
+  });
+});
+
+// ── RANGE ─────────────────────────────────────────
+const teoriRange = document.getElementById('teoriRange');
+const pratikRange = document.getElementById('pratikRange');
+const teoriVal = document.getElementById('teoriVal');
+const pratikVal = document.getElementById('pratikVal');
+teoriRange.addEventListener('input', () => {
+  const t = parseInt(teoriRange.value);
+  pratikRange.value = 100 - t;
+  teoriVal.textContent = t + '%';
+  pratikVal.textContent = (100 - t) + '%';
+});
+
+// ── PROGRESS ──────────────────────────────────────
+let lastPct = 0;
+function updateProgress() {
+  const gc = name => [...document.querySelectorAll(`[name="${name}"]:checked`)].map(i => i.value);
+  const checks = [
+    gc('egitim_amaci').length > 0,
+    !!document.querySelector('[name="katilimci_sayisi"]').value,
+    !!document.querySelector('[name="departman_isimleri"]').value,
+    gc('olgunluk_seviyesi').length > 0,
+    !!document.querySelector('[name="egitim_kapsami"]:checked'),
+    !!document.querySelector('[name="egitim_formati"]:checked'),
+    gc('metodoloji').length > 0,
+    !!document.querySelector('[name="onceki_egitimler"]').value,
+    gc('gelisim_ihtiyac_alanlari').length > 0,
+    !!document.querySelector('[name="hedef_zaman_araligi"]').value,
+    comboValues.length > 0,
+    !!document.querySelector('[name="beklenen_degisim_acik"]').value,
+  ];
+  const pct = Math.round(checks.filter(Boolean).length / checks.length * 100);
+  lastPct = pct;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent =
+    (currentLang === 'tr' ? 'Tamamlanma: ' : 'Completion: ') + pct + '%';
+}
+document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', updateProgress));
+
+// ── TOAST ─────────────────────────────────────────
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ── SUPABASE ──────────────────────────────────────
+async function insertToSupabase(payload) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/egitim_formu`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+// ── VALIDATION ────────────────────────────────────
+function validate() {
+  let ok = true;
+  const show = (id, sid) => { document.getElementById(id).classList.add('show'); document.getElementById(sid).classList.add('has-error'); ok = false; };
+  const hide = (id, sid) => { document.getElementById(id).classList.remove('show'); document.getElementById(sid).classList.remove('has-error'); };
+  const gc = name => [...document.querySelectorAll(`[name="${name}"]:checked`)].map(i => i.value);
+
+  gc('egitim_amaci').length ? hide('err1','s1') : show('err1','s1');
+  document.querySelector('[name="katilimci_sayisi"]').value ? hide('err2','s2') : show('err2','s2');
+  document.querySelector('[name="departman_isimleri"]').value ? hide('err3','s3') : show('err3','s3');
+  gc('olgunluk_seviyesi').length ? hide('err4','s4') : show('err4','s4');
+  document.querySelector('[name="egitim_kapsami"]:checked') ? hide('err5','s5') : show('err5','s5');
+  document.querySelector('[name="egitim_formati"]:checked') ? hide('err6','s6') : show('err6','s6');
+  gc('metodoloji').length ? hide('err7','s7') : show('err7','s7');
+  document.querySelector('[name="onceki_egitimler"]').value ? hide('err9','s9') : show('err9','s9');
+  gc('gelisim_ihtiyac_alanlari').length ? hide('err10','s10') : show('err10','s10');
+  document.querySelector('[name="hedef_zaman_araligi"]').value ? hide('err11','s11') : show('err11','s11');
+  comboValues.length ? hide('err12','s12') : show('err12','s12');
+  document.querySelector('[name="beklenen_degisim_acik"]').value ? hide('err13','s13') : show('err13','s13');
+  return ok;
+}
+
+// ── SUBMIT ────────────────────────────────────────
+document.getElementById('egitimForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!validate()) { document.querySelector('.has-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  const btn = document.getElementById('submitBtn');
+  const gc = name => [...document.querySelectorAll(`[name="${name}"]:checked`)].map(i => i.value).join(', ');
+  const payload = {
+    egitim_amaci: gc('egitim_amaci'),
+    egitim_amaci_diger: document.querySelector('[name="egitim_amaci_diger"]').value || null,
+    katilimci_sayisi: parseInt(document.querySelector('[name="katilimci_sayisi"]').value) || null,
+    departman_sayisi: parseInt(document.querySelector('[name="departman_sayisi"]').value) || null,
+    departman_isimleri: document.querySelector('[name="departman_isimleri"]').value || null,
+    olgunluk_seviyesi: gc('olgunluk_seviyesi'),
+    egitim_kapsami: document.querySelector('[name="egitim_kapsami"]:checked')?.value || null,
+    egitim_formati: document.querySelector('[name="egitim_formati"]:checked')?.value || null,
+    metodoloji: gc('metodoloji'),
+    teori_yuzdesi: parseInt(teoriRange.value),
+    pratik_yuzdesi: 100 - parseInt(teoriRange.value),
+    onceki_egitimler: document.querySelector('[name="onceki_egitimler"]').value || null,
+    gelisim_ihtiyac_alanlari: gc('gelisim_ihtiyac_alanlari'),
+    hedef_zaman_araligi: document.querySelector('[name="hedef_zaman_araligi"]').value || null,
+    stratejik_eksiklikler: comboValues.join(', ') || null,
+    beklenen_degisim_acik: document.querySelector('[name="beklenen_degisim_acik"]').value || null,
+  };
+  btn.disabled = true;
+  btn.textContent = currentLang === 'tr' ? 'Gönderiliyor...' : 'Submitting...';
+  try {
+    await insertToSupabase(payload);
+    showToast(currentLang === 'tr' ? '✓ Form başarıyla gönderildi!' : '✓ Form submitted successfully!');
+    document.getElementById('egitimForm').reset();
+    document.querySelectorAll('.opt-item').forEach(el => el.classList.remove('selected'));
+    comboValues = []; updateComboTags();
+    document.querySelectorAll('.combo-opt').forEach(el => el.classList.remove('selected'));
+    teoriVal.textContent = '50%'; pratikVal.textContent = '50%'; teoriRange.value = 50;
+    updateProgress();
+  } catch (err) {
+    showToast('Error: ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = currentLang === 'tr' ? 'Formu Gönder →' : 'Submit Form →';
+  }
+});
+
+updateProgress();
+</script>
+</body>
+</html>
